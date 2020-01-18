@@ -9,7 +9,7 @@
     "dev:serve:watch": "rollup --watch --config rollup.config.serve.js",
     "dev:watch": "rollup --watch --config rollup.config.dev.js",
     "build": "rollup --config rollup.config.dist.js",
-    "start": "npm run watch",
+    "start": "npm run dev:serve:watch",
     "app:dev": "electron main.js",
     "app:dist": "electron-builder main.js -mw"
   },

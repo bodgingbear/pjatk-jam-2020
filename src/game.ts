@@ -2,7 +2,7 @@ import 'phaser';
 
 import BootScene from './scenes/BootScene';
 import LoadingScene from './scenes/LoadingScene';
-import MainMenuScene from './scenes/MainMenuScene';
+import MainMenuScene from './scenes/GameScene';
 import shouldSkipIntro from './utils/shouldSkipIntro';
 
 const config = {
@@ -23,6 +23,9 @@ const config = {
   },
   zoom: 5,
   pixelArt: true,
+  physics: {
+    default: 'arcade',
+  },
 };
 
 export default class Game extends Phaser.Game {}

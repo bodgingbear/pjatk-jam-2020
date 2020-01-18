@@ -59,7 +59,15 @@ export default class BootScene extends Phaser.Scene {
       this.showLoadingAnimation();
     }
 
-    this.load.image('logo', 'assets/phaser3-logo.png');
+    for (let i = 0; i < 2; i += 1) {
+      this.load.image(`wizard-${i}`, `assets/spritesheets/wizard/wizard-${i}.png`);
+    }
+
+    for (let i = 0; i < 4; i += 1) {
+      this.load.image(`monster-${i}`, `assets/spritesheets/monster/monster-${i}.png`);
+    }
+
+    this.load.image('bg', 'assets/images/bg.png');
   }
 
   // eslint-disable-next-line class-methods-use-this, @typescript-eslint/no-empty-function
