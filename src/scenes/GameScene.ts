@@ -146,7 +146,7 @@ export default class GameScene extends Phaser.Scene {
         .setOrigin(0.5);
 
       this.input.keyboard.on('keydown', () => {
-        window.location.reload();
+        window.location.href = '/?reload=true';
       });
 
       this.score.center();
