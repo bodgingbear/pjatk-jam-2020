@@ -10,6 +10,7 @@ export default class IntroScene extends Phaser.Scene {
   public async create(): Promise<void> {
     const video = this.add.video(1280 / 2, 720 / 2, 'idle-video') as Phaser.GameObjects.Video;
 
+    video.setScale(0.4);
     video.play(true);
 
     const text = this.add.text(
