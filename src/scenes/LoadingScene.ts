@@ -71,7 +71,13 @@ export default class BootScene extends Phaser.Scene {
       this.load.image(`fire-${i}`, `assets/spritesheets/fire/fire-${i}.png`);
     }
 
+    for (let i = 0; i < 13; i += 1) {
+      this.load.image(`hole-${i}`, `assets/spritesheets/hole/hole-${i}.png`);
+    }
+
     this.load.image('bg', 'assets/images/bg.png');
+
+    this.load.image('overlay', 'assets/images/dark.png');
   }
 
   // eslint-disable-next-line class-methods-use-this, @typescript-eslint/no-empty-function
@@ -79,8 +85,6 @@ export default class BootScene extends Phaser.Scene {
 
   private changeScene(): void {
     this.scene.start('GameScene');
-    this.scene.start('MainMenuScene');
-    this.scene.bringToTop('MainMenuScene');
   }
 
   private playEndingAnimation(): void {

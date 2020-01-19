@@ -2,6 +2,7 @@ import { Wizard } from '../objects/Wizard';
 import { Monster, MonsterType } from '../objects/Monster';
 import { intersects } from '../utils/intersects';
 import { MonstersScheduler } from '../objects/MonstersScheduler';
+import { Score } from '../objects/Score';
 
 export default class GameScene extends Phaser.Scene {
   wizard: Wizard
@@ -10,9 +11,13 @@ export default class GameScene extends Phaser.Scene {
 
   monstersScheduler: MonstersScheduler
 
+  score: Score
+
+  overlay: Phaser.GameObjects.Image
+
   public constructor() {
     super({
-      key: 'MainMenuScene',
+      key: 'GameScene',
     });
 
     this.monsters = [];
@@ -20,8 +25,12 @@ export default class GameScene extends Phaser.Scene {
 
   create(): void {
     this.add.image(1280 / 2, 720 / 2, 'bg').setScale(5);
+    this.overlay = this.add.image(1280 / 2, 720 / 2, 'overlay');
+    this.overlay.setAlpha(0);
 
     this.wizard = new Wizard(this);
+
+    this.score = new Score(this);
 
     this.wizard.setStaffAttackCb(this.onWizardStuffAttack);
     this.wizard.setFireAttackCb(this.onWizardFireAttack);
@@ -46,14 +55,15 @@ export default class GameScene extends Phaser.Scene {
 
     if (monsterToKill) {
       monsterToKill.kill();
+      this.score.addScore();
     }
   }
 
   onWizardFireAttack = (): void => {
     this.monsters = this.monsters.filter((monster) => {
-      console.log(this.wizard.fire.x, this.wizard.fire.displayWidth);
       if (intersects(this.wizard.fire, monster.sprite)) {
         monster.kill();
+        this.score.addScore();
         return false;
       }
       return true;
@@ -72,8 +82,36 @@ export default class GameScene extends Phaser.Scene {
       monster.update();
 
       if (intersects(monster.sprite, this.wizard.sprite, 50)) {
-        this.wizard.kill();
+        this.endGame();
       }
     });
+  }
+
+  endGame(): void {
+    this.wizard.kill();
+    this.monstersScheduler.stop();
+
+    this.add.tween({
+      targets: this.overlay,
+      alpha: 0.7,
+      duration: 1500,
+      ease: Phaser.Math.Easing.Linear.Linear,
+    });
+
+    setTimeout(() => {
+      this.monsters.forEach((monster) => monster.kill());
+      this.monsters = [];
+
+      this.add.text(1280 / 2, 720 / 2 + 100, 'Press any key to play again.')
+        .setFontSize(42)
+        .setOrigin(0.5);
+
+      this.input.keyboard.on('keydown', () => {
+        this.scene.stop('GameScene');
+        this.scene.start('GameScene');
+      });
+
+      this.score.center();
+    }, 1500);
   }
 }
