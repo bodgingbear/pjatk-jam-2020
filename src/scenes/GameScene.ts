@@ -21,6 +21,38 @@ export default class GameScene extends Phaser.Scene {
   create(): void {
     this.add.image(1280 / 2, 720 / 2, 'bg').setScale(5);
 
+    const textStrings = ['Use A/D to move', 'Use Space to fight', 'Use 1/2 to change weapons'];
+    const startingY = 70;
+    const yStep = 40;
+
+    const texts = textStrings.map((t, i) => {
+      const text = this.add.text(
+        1280 / 2,
+        startingY + yStep * i,
+        t,
+        {
+          fontFamily: 'Pixel miners',
+          fontSize: '24px',
+          align: 'center',
+        },
+      );
+
+      text.setX(text.x - text.width / 2);
+
+      return text;
+    });
+
+    setTimeout(() => {
+      this.tweens.add({
+        targets: texts,
+        alpha: { from: 1, to: 0 },
+        ease: 'Linear',
+        duration: 200,
+        repeat: 0,
+        yoyo: false,
+      });
+    }, 4000);
+
     this.wizard = new Wizard(this);
 
     this.wizard.setStaffAttackCb(this.onWizardStuffAttack);
