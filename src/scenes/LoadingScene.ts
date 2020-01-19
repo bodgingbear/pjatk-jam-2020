@@ -79,17 +79,22 @@ export default class BootScene extends Phaser.Scene {
 
     this.load.image('bg', 'assets/images/bg.png');
 
-    this.load.image('story-gun-closed', 'assets/images/gun_closed.png');
-    this.load.image('story-gun-open-0', 'assets/images/gun_open-0.png');
-    this.load.image('story-gun-open-1', 'assets/images/gun_open-1.png');
+    if (!shouldSkipStory()) {
+      this.load.image('story-gun-closed', 'assets/images/gun_closed.png');
+      this.load.image('story-gun-open-0', 'assets/images/gun_open-0.png');
+      this.load.image('story-gun-open-1', 'assets/images/gun_open-1.png');
 
-    for (let i = 0; i < 15; i += 1) {
-      this.load.image(`story-gun-error-${i}`, `assets/spritesheets/gun-error/gun_anim_error${i}.png`);
+      for (let i = 0; i < 15; i += 1) {
+        this.load.image(`story-gun-error-${i}`, `assets/spritesheets/gun-error/gun_anim_error${i}.png`);
+      }
+
+      this.load.audio('story-voiceover', 'assets/audio/intro.mp3');
     }
 
-    this.load.audio('story-voiceover', 'assets/audio/intro.mp3');
+    if (!shouldSkipIdle()) {
+      this.load.video('idle-video', 'assets/videos/idle-video.mp4');
+    }
 
-    this.load.video('idle-video', 'assets/videos/idle-video.mp4');
     this.load.image('overlay', 'assets/images/dark.png');
 
     for (let i = 0; i < 10; i += 1) {
