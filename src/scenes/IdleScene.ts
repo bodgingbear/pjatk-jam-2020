@@ -12,6 +12,19 @@ export default class IntroScene extends Phaser.Scene {
 
     video.play(true);
 
+    const text = this.add.text(
+      1280 / 2,
+      70,
+      'Press any key to start',
+      {
+        fontFamily: 'Pixel miners',
+        fontSize: '24px',
+        align: 'center',
+      },
+    );
+
+    text.setX(text.x - text.width / 2);
+
     this.input.keyboard.on('keydown', (): void => {
       this.changeScene();
       this.input.keyboard.off('keydown');
