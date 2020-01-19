@@ -1,3 +1,8 @@
+export enum MonsterType {
+    Ground,
+    Falling
+}
+
 export class Monster {
     scene: Phaser.Scene
 
@@ -7,9 +12,13 @@ export class Monster {
 
     body: Phaser.Physics.Arcade.Body
 
-    constructor(scene: Phaser.Scene, spriteToFollow: Phaser.GameObjects.Sprite) {
+    isReadyToMove: boolean
+
+    constructor(scene: Phaser.Scene, spriteToFollow: Phaser.GameObjects.Sprite, monsterType: MonsterType) {
       this.scene = scene;
-      this.sprite = this.scene.add.sprite(1280 - 100, 720 - 90, 'monster-0');
+
+      this.sprite = this.scene.add.sprite(0, 0, 'monster-0');
+
       this.sprite.setScale(5);
       this.scene.physics.world.enable(this.sprite);
 
@@ -17,6 +26,34 @@ export class Monster {
 
       this.spriteToFollow = spriteToFollow;
       this.setupAnimations();
+      this.handleTypeness(monsterType);
+    }
+
+    handleTypeness(monsterType: MonsterType): void {
+      let spawnPosX = null;
+      let spawnPosY = null;
+      if (monsterType === MonsterType.Falling) {
+        spawnPosX = 100 + Math.random() * 1080;
+        spawnPosY = -60;
+        this.isReadyToMove = false;
+        this.scene.tweens.add({
+          targets: this.sprite,
+          y: 720 - 55,
+          ease: Phaser.Math.Easing.Quadratic.In,
+          duration: 1100,
+          repeat: 0,
+          yoyo: false,
+          onComplete: () => {
+            this.isReadyToMove = true;
+          },
+        });
+      } else if (monsterType === MonsterType.Ground) {
+        spawnPosX = 1280 + 100;
+        spawnPosY = 720 - 100;
+        this.isReadyToMove = true;
+      }
+
+      this.sprite.setPosition(spawnPosX, spawnPosY);
     }
 
     setupAnimations(): void {
@@ -35,6 +72,10 @@ export class Monster {
     }
 
     handleMovement(): void {
+      if (!this.isReadyToMove) {
+        return;
+      }
+
       const speed = 60;
 
       if (Math.abs(this.spriteToFollow.x - this.body.x) < 20) {
@@ -55,5 +96,6 @@ export class Monster {
     kill(): void {
       // play dead animation
       this.sprite.destroy();
+      this.body.destroy();
     }
 }

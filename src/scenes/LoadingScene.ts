@@ -59,12 +59,16 @@ export default class BootScene extends Phaser.Scene {
       this.showLoadingAnimation();
     }
 
-    for (let i = 0; i < 2; i += 1) {
+    for (let i = 0; i < 13; i += 1) {
       this.load.image(`wizard-${i}`, `assets/spritesheets/wizard/wizard-${i}.png`);
     }
 
     for (let i = 0; i < 4; i += 1) {
       this.load.image(`monster-${i}`, `assets/spritesheets/monster/monster-${i}.png`);
+    }
+
+    for (let i = 0; i < 11; i += 1) {
+      this.load.image(`fire-${i}`, `assets/spritesheets/fire/fire-${i}.png`);
     }
 
     this.load.image('bg', 'assets/images/bg.png');

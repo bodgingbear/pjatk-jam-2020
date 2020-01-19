@@ -1,5 +1,9 @@
+import { MonsterType } from './Monster';
+
+type SpawnCb = (monsterType: MonsterType) => void
+
 export class MonstersScheduler {
-    onSpawnCb: () => void
+    onSpawnCb: SpawnCb
 
     monstersScheduled: number
 
@@ -9,12 +13,14 @@ export class MonstersScheduler {
       this.monstersScheduled = 0;
     }
 
-    setSpawnCb(cb: () => void): void {
+    setSpawnCb(cb: SpawnCb): void {
       this.onSpawnCb = cb;
     }
 
     start = (): void => {
-      this.onSpawnCb();
+      const monsterType = Math.random() > 0.5 ? MonsterType.Falling : MonsterType.Ground;
+
+      this.onSpawnCb(monsterType);
       this.monstersScheduled += 1;
       const nextTime = this.getNextSchedulingTime();
 
