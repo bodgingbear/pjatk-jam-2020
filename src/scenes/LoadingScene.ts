@@ -1,5 +1,6 @@
 import { createAnimation } from '../utils/createAnimation';
 import shouldSkipIntro from '../utils/shouldSkipIntro';
+import { shouldSkipStory } from '../utils/shouldSkipStory';
 
 export default class BootScene extends Phaser.Scene {
   private introImage: Phaser.GameObjects.Sprite;
@@ -72,15 +73,29 @@ export default class BootScene extends Phaser.Scene {
     }
 
     this.load.image('bg', 'assets/images/bg.png');
+
+    this.load.image('story-gun-closed', 'assets/images/gun_closed.png');
+    this.load.image('story-gun-open-0', 'assets/images/gun_open-0.png');
+    this.load.image('story-gun-open-1', 'assets/images/gun_open-1.png');
+
+    for (let i = 0; i < 15; i += 1) {
+      this.load.image(`story-gun-error-${i}`, `assets/spritesheets/gun-error/gun_anim_error${i}.png`);
+    }
+
+    this.load.audio('story-voiceover', 'assets/audio/intro.mp3');
   }
 
   // eslint-disable-next-line class-methods-use-this, @typescript-eslint/no-empty-function
   public create(): void {}
 
   private changeScene(): void {
-    this.scene.start('GameScene');
-    this.scene.start('MainMenuScene');
-    this.scene.bringToTop('MainMenuScene');
+    if (!shouldSkipStory()) {
+      this.scene.start('IntroScene');
+    } else {
+      this.scene.start('GameScene');
+      this.scene.start('MainMenuScene');
+      this.scene.bringToTop('MainMenuScene');
+    }
   }
 
   private playEndingAnimation(): void {
