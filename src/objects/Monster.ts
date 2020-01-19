@@ -14,7 +14,9 @@ export class Monster {
 
     isReadyToMove: boolean
 
-    constructor(scene: Phaser.Scene, spriteToFollow: Phaser.GameObjects.Sprite, monsterType: MonsterType) {
+    speed: number
+
+    constructor(scene: Phaser.Scene, spriteToFollow: Phaser.GameObjects.Sprite, monsterType: MonsterType, speed = 60) {
       this.scene = scene;
 
       this.sprite = this.scene.add.sprite(0, 0, 'monster-0');
@@ -23,6 +25,8 @@ export class Monster {
       this.scene.physics.world.enable(this.sprite);
 
       this.body = this.sprite.body as Phaser.Physics.Arcade.Body;
+
+      this.speed = speed;
 
       this.spriteToFollow = spriteToFollow;
       this.setupAnimations();
@@ -35,6 +39,8 @@ export class Monster {
       if (monsterType === MonsterType.Falling) {
         spawnPosX = 100 + Math.random() * 1080;
         spawnPosY = -60;
+        const warn = this.scene.add.sprite(spawnPosX, 100, 'warn').setScale(5);
+        setTimeout(() => warn.destroy(), 1200);
         this.isReadyToMove = false;
         this.scene.tweens.add({
           targets: this.sprite,
@@ -43,6 +49,7 @@ export class Monster {
           duration: 1100,
           repeat: 0,
           yoyo: false,
+          delay: 1000,
           onComplete: () => {
             this.isReadyToMove = true;
           },
@@ -76,15 +83,13 @@ export class Monster {
         return;
       }
 
-      const speed = 60;
-
       if (Math.abs(this.spriteToFollow.x - this.body.x) < 20) {
         this.body.velocity.x = 0;
       } else if ((this.spriteToFollow.x - this.body.x) < 0) {
-        this.body.velocity.x = -speed;
+        this.body.velocity.x = -this.speed;
         this.sprite.scaleX = Math.abs(this.sprite.scaleX);
       } else {
-        this.body.velocity.x = speed;
+        this.body.velocity.x = this.speed;
         this.sprite.scaleX = -Math.abs(this.sprite.scaleX);
       }
     }

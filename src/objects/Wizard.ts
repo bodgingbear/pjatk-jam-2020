@@ -39,6 +39,10 @@ export class Wizard {
 
     isFireAvailable: boolean
 
+    fireUI: Phaser.GameObjects.Sprite
+
+    staffUI: Phaser.GameObjects.Sprite
+
     constructor(scene: Phaser.Scene) {
       this.scene = scene;
       this.sprite = this.scene.add.sprite(640, 720 - 120, 'wizard-0');
@@ -71,7 +75,18 @@ export class Wizard {
       this.chosenWeapon = WizardWeapon.Staff;
       this.facing = 'left';
 
+      this.fireUI = this.scene.add.sprite(1280 - 80, 80, 'fire-ui-0');
+      this.fireUI.setScale(5);
+
+      this.staffUI = this.scene.add.sprite(1280 - 200, 80, 'staff-on');
+      this.staffUI.setScale(5);
+
       this.isFireAvailable = false;
+      this.loadFire();
+    }
+
+    loadFire(): void {
+      this.fireUI.anims.play('fire-ui-load');
       setTimeout(() => {
         this.isFireAvailable = true;
       }, 10000);
@@ -106,7 +121,7 @@ export class Wizard {
           { key: 'wizard-9', frame: null },
           { key: 'wizard-10', frame: null },
         ],
-        frameRate: 24,
+        frameRate: 36,
       };
       this.staffHitDur = (this.scene.anims.create(staffHitAnimConfig) as Phaser.Animations.Animation).duration;
 
@@ -126,7 +141,7 @@ export class Wizard {
           { key: 'fire-10', frame: null },
         ],
         yoyo: true,
-        frameRate: 18,
+        frameRate: 24,
       };
       this.firAnimDur = (this.scene.anims.create(fireAnimConfig) as Phaser.Animations.Animation).duration;
 
@@ -153,6 +168,25 @@ export class Wizard {
         frameRate: 18,
       };
       this.scene.anims.create(wizardFireAnimConfig);
+
+      const fireUiAnimConfig: Phaser.Types.Animations.Animation = {
+        key: 'fire-ui-load',
+        frames: [
+          { key: 'fire-ui-0', frame: null },
+          { key: 'fire-ui-1', frame: null },
+          { key: 'fire-ui-2', frame: null },
+          { key: 'fire-ui-3', frame: null },
+          { key: 'fire-ui-4', frame: null },
+          { key: 'fire-ui-5', frame: null },
+          { key: 'fire-ui-6', frame: null },
+          { key: 'fire-ui-7', frame: null },
+          { key: 'fire-ui-8', frame: null },
+        ],
+        duration: 10000,
+        repeat: 0,
+      };
+
+      this.scene.anims.create(fireUiAnimConfig);
     }
 
     setStaffAttackCb(cb: () => void): void {
@@ -166,10 +200,14 @@ export class Wizard {
     chooseWeapon = (weaponType: WizardWeapon): void => {
       if (weaponType === WizardWeapon.Fire && this.isFireAvailable) {
         this.chosenWeapon = weaponType;
-        this.isFireAvailable = false;
-        setTimeout(() => { this.isFireAvailable = true; }, 10000);
+        this.fireUI.setTexture('fire-ui-9');
+        this.staffUI.setTexture('staff-off');
       } else if (weaponType === WizardWeapon.Staff) {
         this.chosenWeapon = weaponType;
+        if (!this.fireUI.anims.isPlaying) {
+          this.fireUI.setTexture('fire-ui-8');
+        }
+        this.staffUI.setTexture('staff-on');
       }
     }
 
@@ -189,6 +227,9 @@ export class Wizard {
       this.isDuringAttack = true;
 
       this.sprite.anims.play('fire-wizard');
+      this.isFireAvailable = false;
+
+      this.loadFire();
 
       setTimeout(() => {
         this.fire = this.scene.add.sprite(0, this.sprite.y + 35, 'fire-5');
@@ -227,7 +268,7 @@ export class Wizard {
 
     handleMovement(): void {
       let velocityX = 0;
-      const speed = 150;
+      const speed = 250;
 
       if (this.isDuringAttack) {
         this.body.velocity.x = 0;

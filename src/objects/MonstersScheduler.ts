@@ -37,14 +37,22 @@ export class MonstersScheduler {
     }
 
     getNextSchedulingTime(): number {
-      return 3000 + Math.max((10 - this.monstersScheduled) / 10, 0) * 3000;
+      let nextTime = 1300;
+
+      if (this.monstersScheduled < 50) {
+        nextTime += Math.max((50 - this.monstersScheduled) / 50, 0) * 1200;
+      } else {
+        nextTime = 800;
+        nextTime += Math.max((100 - (this.monstersScheduled - 50)) / 100, 0) * 500;
+      }
+
+      return nextTime;
     }
 
     stop(): void {
       this.stopped = true;
 
       for (let i = 0; i < this.timeoutRefs.length; i += 1) {
-        console.log(this.timeoutRefs[i]);
         clearTimeout(this.timeoutRefs[i]);
       }
       this.timeoutRefs = [];

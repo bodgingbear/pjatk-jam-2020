@@ -103,7 +103,7 @@ export default class GameScene extends Phaser.Scene {
   }
 
   spawnMonster = (monsterType: MonsterType): void => {
-    const monster = new Monster(this, this.wizard.sprite, monsterType);
+    const monster = new Monster(this, this.wizard.sprite, monsterType, this.monstersScheduler.monstersScheduled > 20 ? 120 : 90);
     this.monsters.push(monster);
   }
 
