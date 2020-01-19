@@ -1,9 +1,9 @@
 import { Physics, GameObjects } from 'phaser';
-import { Monster } from './Monster';
 
 enum WizardWeapon {
   Staff,
-  Fire
+  Fire,
+  Hole
 }
 
 export class Wizard {
@@ -37,6 +37,8 @@ export class Wizard {
 
     fire: Phaser.GameObjects.Sprite
 
+    isFireAvailable: boolean
+
     constructor(scene: Phaser.Scene) {
       this.scene = scene;
       this.sprite = this.scene.add.sprite(640, 720 - 120, 'wizard-0');
@@ -52,6 +54,9 @@ export class Wizard {
       this.keyRight = this.scene.input.keyboard.addKey('D');
 
       this.scene.input.keyboard.on('keydown-SPACE', this.onActionBtnPress);
+      this.scene.input.keyboard.on('keydown-ONE', () => this.chooseWeapon(WizardWeapon.Staff));
+      this.scene.input.keyboard.on('keydown-TWO', () => this.chooseWeapon(WizardWeapon.Fire));
+
 
       this.staffRangeCollider = this.scene.add.rectangle(
         this.sprite.x, this.sprite.y, 200, 100, 0x669966, 0,
@@ -63,8 +68,13 @@ export class Wizard {
       this.killed = false;
       this.isDuringAttack = false;
 
-      this.chosenWeapon = WizardWeapon.Fire;
+      this.chosenWeapon = WizardWeapon.Staff;
       this.facing = 'left';
+
+      this.isFireAvailable = false;
+      setTimeout(() => {
+        this.isFireAvailable = true;
+      }, 10000);
     }
 
     setupAnimations(): void {
@@ -153,6 +163,16 @@ export class Wizard {
       this.onFireAttackCb = cb;
     }
 
+    chooseWeapon = (weaponType: WizardWeapon): void => {
+      if (weaponType === WizardWeapon.Fire && this.isFireAvailable) {
+        this.chosenWeapon = weaponType;
+        this.isFireAvailable = false;
+        setTimeout(() => { this.isFireAvailable = true; }, 10000);
+      } else if (weaponType === WizardWeapon.Staff) {
+        this.chosenWeapon = weaponType;
+      }
+    }
+
     onActionBtnPress = (): void => {
       if (this.killed || this.isDuringAttack) {
         return;
@@ -189,6 +209,7 @@ export class Wizard {
           this.fire.destroy();
           this.sprite.anims.play('wizard-walk');
           this.isDuringAttack = false;
+          this.chooseWeapon(WizardWeapon.Staff);
         }, this.firAnimDur * 2);
       }, 500);
     }
@@ -221,14 +242,6 @@ export class Wizard {
         velocityX += speed;
       }
 
-      // if (this.sprite.x - this.sprite.width / 2 <= 0) {
-      //   velocityX = Math.max(velocityX, 0);
-      // }
-
-      // if (this.sprite.x + this.sprite.width / 2 >= 1280) {
-      //   velocityX = Math.min(velocityX, 0);
-      // }
-
       if (velocityX > 0) {
         this.facing = 'right';
         this.sprite.scaleX = -Math.abs(this.sprite.scaleX);
@@ -236,12 +249,6 @@ export class Wizard {
         this.facing = 'left';
         this.sprite.scaleX = Math.abs(this.sprite.scaleX);
       }
-
-      // if (velocityX !== 0) {
-      //   this.sprite.anims.play('wizard-walk', true);
-      // } else {
-      //   this.sprite.anims.stop();
-      // }
 
       this.body.velocity.x = velocityX;
     }

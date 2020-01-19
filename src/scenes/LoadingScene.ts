@@ -73,6 +73,10 @@ export default class BootScene extends Phaser.Scene {
       this.load.image(`fire-${i}`, `assets/spritesheets/fire/fire-${i}.png`);
     }
 
+    for (let i = 0; i < 13; i += 1) {
+      this.load.image(`hole-${i}`, `assets/spritesheets/hole/hole-${i}.png`);
+    }
+
     this.load.image('bg', 'assets/images/bg.png');
 
     this.load.image('story-gun-closed', 'assets/images/gun_closed.png');
@@ -86,6 +90,7 @@ export default class BootScene extends Phaser.Scene {
     this.load.audio('story-voiceover', 'assets/audio/intro.mp3');
 
     this.load.video('idle-video', 'assets/videos/idle-video.mp4');
+    this.load.image('overlay', 'assets/images/dark.png');
   }
 
   // eslint-disable-next-line class-methods-use-this, @typescript-eslint/no-empty-function
@@ -98,8 +103,6 @@ export default class BootScene extends Phaser.Scene {
       this.scene.start('IntroScene');
     } else {
       this.scene.start('GameScene');
-      this.scene.start('MainMenuScene');
-      this.scene.bringToTop('MainMenuScene');
     }
   }
 
