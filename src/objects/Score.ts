@@ -12,15 +12,31 @@ export class Score {
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
 
-    this.scoreText = this.scene.add.text(40, 40, 'Score: 0');
+    this.scoreText = this.scene.add.text(
+      40,
+      40,
+      'Score: 0',
+      {
+        fontFamily: 'Pixel miners',
+        fontSize: '24px',
+      },
+    );
+
     this.scoreText.setOrigin(0, 0);
-    this.scoreText.setFontSize(36);
     this.score = 0;
 
     this.highscore = +(window.localStorage.getItem('highscore') || 0);
-    this.highscoreText = this.scene.add.text(40, 90, `Highscore: ${this.highscore}`);
+    this.highscoreText = this.scene.add.text(
+      40,
+      75,
+      `Highscore: ${this.highscore}`,
+      {
+        fontFamily: 'Pixel miners',
+        fontSize: '24px',
+      },
+    );
+
     this.highscoreText.setOrigin(0, 0);
-    this.highscoreText.setFontSize(36);
   }
 
   addScore(): void {

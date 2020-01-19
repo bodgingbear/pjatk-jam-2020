@@ -134,8 +134,15 @@ export default class GameScene extends Phaser.Scene {
       this.monsters.forEach((monster) => monster.kill());
       this.monsters = [];
 
-      this.add.text(1280 / 2, 720 / 2 + 100, 'Press any key to play again.')
-        .setFontSize(42)
+      this.add.text(
+        1280 / 2,
+        720 / 2 + 100,
+        'Press any key to play again.',
+        {
+          fontFamily: 'Pixel miners',
+          fontSize: '24px',
+        },
+      )
         .setOrigin(0.5);
 
       this.input.keyboard.on('keydown', () => {
