@@ -92,7 +92,7 @@ export default class BootScene extends Phaser.Scene {
     }
 
     if (!shouldSkipIdle()) {
-      this.load.video('idle-video', 'assets/videos/idle-video.mp4');
+      this.load.video('idle-video', 'assets/videos/idle-video.mp4', 'loadeddata', false, true);
     }
 
     this.load.image('overlay', 'assets/images/dark.png');

@@ -60,10 +60,10 @@ export default class IntroScene extends Phaser.Scene {
   }
 
   public async create(): Promise<void> {
-    this.input.keyboard.on('keydown', (): void => {
-      this.changeScene();
-      this.input.keyboard.off('keydown');
-    });
+    // this.input.keyboard.on('keydown', (): void => {
+    //   this.changeScene();
+    //   this.input.keyboard.off('keydown');
+    // });
 
     this.add.image(1280 / 2, 720 / 2, 'story-gun-closed').setScale(5);
     const open0 = this.add.sprite(1280 / 2, 720 / 2, 'story-gun-open-0').setScale(5);
