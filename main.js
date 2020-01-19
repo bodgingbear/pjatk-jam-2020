@@ -10,11 +10,11 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
     },
-    icon: __dirname + '/dist/assets/icon.png'
+    icon: __dirname + '/public/assets/icon.png'
   });
 
   // and load the index.html of the app.
-  win.loadFile('dist/index.html');
+  win.loadFile('public/index.html');
 }
 
 app.on('ready', createWindow);

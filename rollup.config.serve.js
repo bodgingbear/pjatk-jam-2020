@@ -10,7 +10,7 @@ export default {
     //  See https://www.npmjs.com/package/rollup-plugin-serve for config options
     serve({
       open: false,
-      contentBase: 'dist',
+      contentBase: 'public',
       host: 'localhost',
       port: 8080,
       headers: {
