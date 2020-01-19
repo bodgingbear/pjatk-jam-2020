@@ -83,6 +83,10 @@ export class Monster {
         return;
       }
 
+      if (!this.spriteToFollow.active) {
+        return;
+      }
+
       if (Math.abs(this.spriteToFollow.x - this.body.x) < 20) {
         this.body.velocity.x = 0;
       } else if ((this.spriteToFollow.x - this.body.x) < 0) {

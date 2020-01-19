@@ -43,6 +43,13 @@ export class Wizard {
 
     staffUI: Phaser.GameObjects.Sprite
 
+    clickSound: Phaser.Sound.BaseSound
+
+    wrongSound: Phaser.Sound.BaseSound
+
+
+    laskaSound: Phaser.Sound.BaseSound
+
     constructor(scene: Phaser.Scene) {
       this.scene = scene;
       this.sprite = this.scene.add.sprite(640, 720 - 120, 'wizard-0');
@@ -83,11 +90,18 @@ export class Wizard {
 
       this.isFireAvailable = false;
       this.loadFire();
+
+      this.clickSound = this.scene.sound.add('click');
+
+      this.wrongSound = this.scene.sound.add('wrong');
+
+      this.laskaSound = this.scene.sound.add('laska');
     }
 
     loadFire(): void {
       this.fireUI.anims.play('fire-ui-load');
       setTimeout(() => {
+        this.fireUI.setTexture('fire-ui-8');
         this.isFireAvailable = true;
       }, 10000);
     }
@@ -180,7 +194,6 @@ export class Wizard {
           { key: 'fire-ui-5', frame: null },
           { key: 'fire-ui-6', frame: null },
           { key: 'fire-ui-7', frame: null },
-          { key: 'fire-ui-8', frame: null },
         ],
         duration: 10000,
         repeat: 0,
@@ -198,16 +211,22 @@ export class Wizard {
     }
 
     chooseWeapon = (weaponType: WizardWeapon): void => {
-      if (weaponType === WizardWeapon.Fire && this.isFireAvailable) {
+      if (weaponType === WizardWeapon.Fire) {
+        if (!this.isFireAvailable) {
+          this.wrongSound.play();
+          return;
+        }
         this.chosenWeapon = weaponType;
         this.fireUI.setTexture('fire-ui-9');
         this.staffUI.setTexture('staff-off');
+        this.clickSound.play();
       } else if (weaponType === WizardWeapon.Staff) {
         this.chosenWeapon = weaponType;
         if (!this.fireUI.anims.isPlaying) {
           this.fireUI.setTexture('fire-ui-8');
         }
         this.staffUI.setTexture('staff-on');
+        this.clickSound.play();
       }
     }
 
@@ -256,6 +275,7 @@ export class Wizard {
     }
 
     onStaffAttack = (): void => {
+      this.laskaSound.play();
       this.isDuringAttack = true;
       this.sprite.anims.play('staff-hit');
       setTimeout(() => {

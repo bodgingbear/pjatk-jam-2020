@@ -32,9 +32,9 @@ export default {
       'typeof PLUGIN_CAMERA3D': JSON.stringify(false),
       'typeof PLUGIN_FBINSTANT': JSON.stringify(false),
       'typeof FEATURE_SOUND': JSON.stringify(true),
-      'process.env.SKIP_INTRO': JSON.stringify(true),
-      'process.env.SKIP_STORY': JSON.stringify(true),
-      'process.env.SKIP_IDLE': JSON.stringify(true),
+      'process.env.SKIP_INTRO': JSON.stringify(false),
+      'process.env.SKIP_STORY': JSON.stringify(false),
+      'process.env.SKIP_IDLE': JSON.stringify(false),
     }),
 
     //  Parse our .ts source files

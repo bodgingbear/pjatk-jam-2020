@@ -15,6 +15,15 @@ export default class GameScene extends Phaser.Scene {
 
   overlay: Phaser.GameObjects.Image
 
+  stuffDeathSound: Phaser.Sound.BaseSound[]
+
+  fireSound: Phaser.Sound.BaseSound
+
+  fireDeath: Phaser.Sound.BaseSound
+
+  deathSound: Phaser.Sound.BaseSound
+
+
   public constructor() {
     super({
       key: 'GameScene',
@@ -27,6 +36,8 @@ export default class GameScene extends Phaser.Scene {
     this.add.image(1280 / 2, 720 / 2, 'bg').setScale(5);
     this.overlay = this.add.image(1280 / 2, 720 / 2, 'overlay');
     this.overlay.setAlpha(0);
+    this.setupMusic();
+    this.loadSounds();
 
     const textStrings = ['Use A/D to move', 'Use Space to fight', 'Use 1/2 to change weapons'];
     const startingY = 70;
@@ -72,6 +83,35 @@ export default class GameScene extends Phaser.Scene {
     this.monstersScheduler.start();
   }
 
+  setupMusic(): void {
+    const music = this.sound.add('theme');
+    const loopMarker = {
+      name: 'loop',
+      start: 0,
+      config: {
+        loop: true,
+        volume: 0.1,
+      },
+
+    };
+
+    music.addMarker(loopMarker);
+    music.play('loop');
+  }
+
+  loadSounds(): void {
+    this.stuffDeathSound = [
+      this.sound.add('staff-death-1'),
+      this.sound.add('staff-death-2'),
+      this.sound.add('staff-death-0'),
+    ];
+
+    this.fireSound = this.sound.add('fire-sound');
+    this.fireDeath = this.sound.add('fire-death');
+
+    this.deathSound = this.sound.add('wizard-death');
+  }
+
   onWizardStuffAttack = (): void => {
     const wizardX = this.wizard.sprite.x;
     this.monsters.sort((a, b) => Math.abs(b.sprite.x - wizardX) - Math.abs(a.sprite.x - wizardX));
@@ -88,12 +128,16 @@ export default class GameScene extends Phaser.Scene {
     if (monsterToKill) {
       monsterToKill.kill();
       this.score.addScore();
+      this.stuffDeathSound[Math.floor(Math.random() * this.stuffDeathSound.length)].play();
     }
   }
 
   onWizardFireAttack = (): void => {
+    this.fireSound.play();
+
     this.monsters = this.monsters.filter((monster) => {
       if (intersects(this.wizard.fire, monster.sprite)) {
+        this.fireDeath.play();
         monster.kill();
         this.score.addScore();
         return false;
@@ -110,13 +154,16 @@ export default class GameScene extends Phaser.Scene {
   update(): void {
     this.wizard.update();
 
-    this.monsters.forEach((monster) => {
+    for (let i = 0; i < this.monsters.length; i += 1) {
+      const monster = this.monsters[i];
       monster.update();
 
       if (intersects(monster.sprite, this.wizard.sprite, 50)) {
+        this.deathSound.play();
         this.endGame();
+        break;
       }
-    });
+    }
   }
 
   endGame(): void {

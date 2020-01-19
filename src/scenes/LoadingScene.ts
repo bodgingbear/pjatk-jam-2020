@@ -105,6 +105,17 @@ export default class BootScene extends Phaser.Scene {
     this.load.image('staff-on', 'assets/spritesheets/ui/staff-on.png');
 
     this.load.image('warn', 'assets/images/warn.png');
+
+    this.load.audio('theme', 'assets/audio/theme.mp3');
+    this.load.audio('click', 'assets/audio/click.mp3');
+    this.load.audio('wrong', 'assets/audio/wrong-button.mp3');
+    this.load.audio('staff-death-1', 'assets/audio/enemy_death_1.mp3');
+    this.load.audio('staff-death-2', 'assets/audio/enemy_death_2.mp3');
+    this.load.audio('staff-death-0', 'assets/audio/enemy_death_0.mp3');
+    this.load.audio('fire-sound', 'assets/audio/fire.mp3');
+    this.load.audio('fire-death', 'assets/audio/enemy_death_fire.mp3');
+    this.load.audio('wizard-death', 'assets/audio/mag-death.mp3');
+    this.load.audio('laska', 'assets/audio/laska.mp3');
   }
 
   // eslint-disable-next-line class-methods-use-this, @typescript-eslint/no-empty-function
