@@ -4,6 +4,7 @@ import BootScene from './scenes/BootScene';
 import LoadingScene from './scenes/LoadingScene';
 import MainMenuScene from './scenes/GameScene';
 import IntroScene from './scenes/IntroScene';
+import IdleScene from './scenes/IdleScene';
 import shouldSkipIntro from './utils/shouldSkipIntro';
 
 const config = {
@@ -14,6 +15,7 @@ const config = {
   scene: [
     ...(shouldSkipIntro() ? [] : [BootScene]),
     LoadingScene,
+    IdleScene,
     IntroScene,
     MainMenuScene,
   ],

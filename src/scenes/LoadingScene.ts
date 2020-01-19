@@ -1,6 +1,7 @@
 import { createAnimation } from '../utils/createAnimation';
 import shouldSkipIntro from '../utils/shouldSkipIntro';
 import { shouldSkipStory } from '../utils/shouldSkipStory';
+import { shouldSkipIdle } from '../utils/shouldSkipIdle';
 
 export default class BootScene extends Phaser.Scene {
   private introImage: Phaser.GameObjects.Sprite;
@@ -83,13 +84,17 @@ export default class BootScene extends Phaser.Scene {
     }
 
     this.load.audio('story-voiceover', 'assets/audio/intro.mp3');
+
+    this.load.video('idle-video', 'assets/videos/idle-video.mp4');
   }
 
   // eslint-disable-next-line class-methods-use-this, @typescript-eslint/no-empty-function
   public create(): void {}
 
   private changeScene(): void {
-    if (!shouldSkipStory()) {
+    if (!shouldSkipIdle()) {
+      this.scene.start('IdleScene');
+    } else if (!shouldSkipStory()) {
       this.scene.start('IntroScene');
     } else {
       this.scene.start('GameScene');

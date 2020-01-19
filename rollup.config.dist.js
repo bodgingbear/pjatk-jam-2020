@@ -35,6 +35,7 @@ export default {
       'typeof FEATURE_SOUND': JSON.stringify(true),
       'process.env.SKIP_INTRO': JSON.stringify(false),
       'process.env.SKIP_STORY': JSON.stringify(false),
+      'process.env.SKIP_IDLE': JSON.stringify(false),
     }),
 
     //  Parse our .ts source files

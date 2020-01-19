@@ -1,14 +1,13 @@
-import { sleep } from "../utils/sleep";
+import { sleep } from '../utils/sleep';
 
 export default class IntroScene extends Phaser.Scene {
-  private sprite: Phaser.GameObjects.Sprite
-
   public constructor() {
     super({
       key: 'IntroScene',
     });
   }
 
+  // eslint-disable-next-line class-methods-use-this
   private setupGunAnimation(scene: Phaser.Scene): void {
     const gunAnimConfig: Phaser.Types.Animations.Animation = {
       key: 'story-gun-open',
@@ -52,12 +51,20 @@ export default class IntroScene extends Phaser.Scene {
       repeat: 0,
     };
 
+    // eslint-disable-next-line no-unused-expressions
     scene.anims.create(gunAnimConfig) as Phaser.Animations.Animation;
+    // eslint-disable-next-line no-unused-expressions
     scene.anims.create(gunAnimErrorConfig) as Phaser.Animations.Animation;
+    // eslint-disable-next-line no-unused-expressions
     scene.anims.create(gunAnimIdleConfig) as Phaser.Animations.Animation;
   }
 
   public async create(): Promise<void> {
+    this.input.keyboard.on('keydown', (): void => {
+      this.changeScene();
+      this.input.keyboard.off('keydown');
+    });
+
     this.add.image(1280 / 2, 720 / 2, 'story-gun-closed').setScale(5);
     const open0 = this.add.sprite(1280 / 2, 720 / 2, 'story-gun-open-0').setScale(5);
     this.setupGunAnimation(this);
@@ -74,7 +81,7 @@ export default class IntroScene extends Phaser.Scene {
       ease: 'Linear',
       duration: 1000,
       repeat: 0,
-      yoyo: false
+      yoyo: false,
     });
 
     await sleep(5500);
@@ -87,7 +94,7 @@ export default class IntroScene extends Phaser.Scene {
       ease: 'Cubic.easeInOut',
       duration: 2000,
       repeat: 0,
-      yoyo: false
+      yoyo: false,
     });
 
     await sleep(9000);
@@ -109,7 +116,7 @@ export default class IntroScene extends Phaser.Scene {
       ease: 'Cubic.easeInOut',
       duration: 1000,
       repeat: 0,
-      yoyo: false
+      yoyo: false,
     });
 
     this.changeScene();
