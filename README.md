@@ -12,7 +12,7 @@ This game was created during **PJATK Game Jam (2020)**
 
 ## Play online
 
-[https://pistol-guild.bodgingbear.dev/)
+[https://pistol-guild.bodgingbear.dev](https://pistol-guild.bodgingbear.dev/)
 
 ## Links
 * GitHub: [https://github.com/bodgingbear/inside-the-pistol-guild](https://github.com/bodgingbear/inside-the-pistol-guild/)
