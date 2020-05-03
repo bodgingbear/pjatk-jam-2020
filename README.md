@@ -1,3 +1,7 @@
+# Inside the pistol guild
+
+![ ](https://raw.githubusercontent.com/bodgingbear/inside-the-pistol-guild/master/website/gif.gif)
+
 # Phaser 3 TypeScript Project Template
 
 This quick-start project template combines Phaser 3 with [TypeScript](https://www.typescriptlang.org/) and uses [Rollup](https://rollupjs.org) for bundling.
